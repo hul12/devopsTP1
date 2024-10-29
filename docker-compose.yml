@@ -1,0 +1,36 @@
+version: '3.7'
+
+services:
+  backend:
+    build: ./TP Backend API 2/simple-api-student/
+    container_name: myapi
+    networks:
+      - my-network
+    ports:
+      - "8081:8080"
+    depends_on: database
+
+
+  database:
+    build: ./TP Base de données/
+    container_name: db
+    environment:
+      - POSTGRES_DB=db
+      - POSTGRES_USER=usr
+      - POSTGRES_PASSWORD=pwd
+    ports:
+      - "5432:5432"
+    networks:
+      - my-network
+
+  httpd:
+    build: ./TP Serveur HTTP/
+    container_name: myhttpd
+    ports:
+      - "80:80"
+    networks:
+      - my-network
+    depends_on: backend
+
+networks:
+  my-network:
